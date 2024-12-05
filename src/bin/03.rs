@@ -4,36 +4,47 @@ advent_of_code::solution!(3);
 
 pub fn part_one(input: &str) -> Option<u32> {
     let regex = Regex::new(r"mul\((\d+),(\d+)\)").unwrap();
-    Some(regex.captures_iter(input).map(|c| c.extract()).map(|(input, [x, y])| {
-        let x: u32 = x.parse().unwrap();
-        let y: u32 = y.parse().unwrap();
-        x*y
-    }).sum())
+    Some(
+        regex
+            .captures_iter(input)
+            .map(|c| c.extract())
+            .map(|(_, [x, y])| {
+                let x: u32 = x.parse().unwrap();
+                let y: u32 = y.parse().unwrap();
+                x * y
+            })
+            .sum(),
+    )
 }
 
 pub fn part_two(input: &str) -> Option<u32> {
-    let regex = Regex::new(r"(?<mul>mul\((?<x>\d+),(?<y>\d+)\))|(?<do>do\(\))|(?<dont>don't\(\))").unwrap();
+    let regex =
+        Regex::new(r"(?<mul>mul\((?<x>\d+),(?<y>\d+)\))|(?<do>do\(\))|(?<dont>don't\(\))").unwrap();
     let mut mul_enable = true;
-    Some(regex.captures_iter(input).flat_map(|c| {
-        if c.name("mul").is_some() {
-            if mul_enable {
-                let x: u32 = c["x"].parse().unwrap();
-                let y: u32 = c["y"].parse().unwrap();
-                Some(x * y)
-            } else {
-                None
-            }
-        } else if c.name("do").is_some() {
-            mul_enable = true;
-            None
-        } else if c.name("dont").is_some() {
-            mul_enable = false;
-            None
-        } else {
-            panic!()
-        }
-    }).sum())
-
+    Some(
+        regex
+            .captures_iter(input)
+            .flat_map(|c| {
+                if c.name("mul").is_some() {
+                    if mul_enable {
+                        let x: u32 = c["x"].parse().unwrap();
+                        let y: u32 = c["y"].parse().unwrap();
+                        Some(x * y)
+                    } else {
+                        None
+                    }
+                } else if c.name("do").is_some() {
+                    mul_enable = true;
+                    None
+                } else if c.name("dont").is_some() {
+                    mul_enable = false;
+                    None
+                } else {
+                    panic!()
+                }
+            })
+            .sum(),
+    )
 }
 
 #[cfg(test)]
