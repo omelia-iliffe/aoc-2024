@@ -39,11 +39,7 @@ impl PartialOrd for Page {
 
 impl Ord for Page {
     fn cmp(&self, other: &Self) -> Ordering {
-        if self
-            .must_be_before
-            .iter()
-            .any(|r| *r == other.number)
-        {
+        if self.must_be_before.iter().any(|r| *r == other.number) {
             Ordering::Less
         } else {
             Ordering::Greater

@@ -1,5 +1,4 @@
 use std::ops::{Not, Range};
-use itertools::Itertools;
 
 advent_of_code::solution!(6);
 
@@ -11,7 +10,6 @@ enum Direction {
 }
 
 impl Direction {
-    
     fn from_byte(input: u8) -> Self {
         use Direction::*;
         match input {
@@ -19,26 +17,28 @@ impl Direction {
             b'>' => Right,
             b'v' => Down,
             b'<' => Left,
-            _ => panic!("not a valid dir")
+            _ => panic!("not a valid dir"),
         }
     }
-    
-    fn move_in(&self, c: (usize, usize),
-               x_range: &Range<i32>,
-               y_range: &Range<i32>,
- ) -> Option<(usize, usize)> {
+
+    fn move_in(
+        &self,
+        c: (usize, usize),
+        x_range: &Range<i32>,
+        y_range: &Range<i32>,
+    ) -> Option<(usize, usize)> {
         use Direction::*;
         let (x, y) = (c.0 as i32, c.1 as i32);
         let (x, y) = match self {
             Up => (x, y - 1),
-            Right => (x+1, y),
-            Down => (x, y+1),
-            Left => (x-1, y),
+            Right => (x + 1, y),
+            Down => (x, y + 1),
+            Left => (x - 1, y),
         };
         (x_range.contains(&x) && y_range.contains(&y)).then_some((x as usize, y as usize))
     }
 
-    fn rotate(self) -> Self{
+    fn rotate(self) -> Self {
         use Direction::*;
         match self {
             Up => Right,
@@ -64,11 +64,9 @@ pub fn part_one(input: &str) -> Option<u32> {
     let mut gaurd_cood = index_2_cood(gaurd_index, line_len);
     let mut dir = Direction::from_byte(input.as_bytes()[gaurd_index]);
     let mut visited = vec![gaurd_cood];
-    while let Some(c)= dir.move_in(gaurd_cood, &x_range, &y_range) {
+    while let Some(c) = dir.move_in(gaurd_cood, &x_range, &y_range) {
         match input.as_bytes()[cood_2_index(c, line_len)] {
-            b'#' => {
-                dir = dir.rotate()
-            }
+            b'#' => dir = dir.rotate(),
             _ => {
                 if visited.contains(&c).not() {
                     visited.push(c);
@@ -76,9 +74,8 @@ pub fn part_one(input: &str) -> Option<u32> {
                 gaurd_cood = c
             }
         }
-    };
-    
-    
+    }
+
     Some(visited.len() as u32)
 }
 

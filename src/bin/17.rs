@@ -1,6 +1,3 @@
-use std::collections::HashMap;
-use std::fmt::Debug;
-use std::ops::{AddAssign};
 use derive_more::Display;
 use itertools::Itertools;
 use nom::bytes::complete::tag;
@@ -9,6 +6,9 @@ use nom::character::complete::line_ending;
 use nom::multi::separated_list1;
 use nom::sequence::{preceded, separated_pair, tuple};
 use nom::IResult;
+use std::collections::HashMap;
+use std::fmt::Debug;
+use std::ops::AddAssign;
 
 advent_of_code::solution!(17);
 
@@ -26,11 +26,11 @@ struct Computer {
 impl Debug for Computer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("Computer")
-        .field("instruction_pointer", &self.instruction_pointer)
-        .field("a", &self.a)
-        .field("b", &self.b)
-        .field("c", &self.c)
-        .finish()
+            .field("instruction_pointer", &self.instruction_pointer)
+            .field("a", &self.a)
+            .field("b", &self.b)
+            .field("c", &self.c)
+            .finish()
     }
 }
 
@@ -64,15 +64,16 @@ impl Computer {
                     // println!("jumping to {operand:?}");
                     self.instruction_pointer = operand.as_usize();
                     increase = false;
-                // } else {
-                //     println!("not jumping");
+                    // } else {
+                    //     println!("not jumping");
                 }
             }
             Bxc => {
                 self.set_register(Register::B, self.b ^ self.c);
             }
             Out => {
-                self.output.push(U3::new((self.evaluate_combo(operand) % 8) as u8));
+                self.output
+                    .push(U3::new((self.evaluate_combo(operand) % 8) as u8));
             }
         }
         if increase {
@@ -250,14 +251,13 @@ pub fn part_two(input: &str) -> Option<i64> {
         c.run();
         println!("{}", c.output.clone().into_iter().join(","));
         if c.output == goal {
-            break computer.a
+            break computer.a;
         } else {
             computer.a += 1;
             dbg!(computer.a);
         }
     };
     Some(a)
-
 }
 
 #[cfg(test)]
@@ -339,7 +339,6 @@ mod tests {
 
     #[test]
     fn test_part_two() {
-
         let input = "Register A: 2024
 Register B: 0
 Register C: 0
