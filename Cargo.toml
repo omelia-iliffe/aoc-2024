@@ -23,8 +23,11 @@ test_lib = []
 
 # Template dependencies
 chrono = { version = "0.4.38", optional = true }
+coordinates = "0.3.1"
+derive_more = { version = "1.0.0", features = ["display", "debug"] }
 dhat = { version = "0.3.3", optional = true }
 itertools = "0.13.0"
+nom = "7.1.3"
 pico-args = "0.5.0"
 regex = "1.11.1"
 tinyjson = "2.5.1"
