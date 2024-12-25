@@ -23,7 +23,6 @@ test_lib = []
 
 # Template dependencies
 chrono = { version = "0.4.38", optional = true }
-coordinates = "0.3.1"
 derive_more = { version = "1.0.0", features = ["display", "debug"] }
 dhat = { version = "0.3.3", optional = true }
 glam = "0.29.2"
